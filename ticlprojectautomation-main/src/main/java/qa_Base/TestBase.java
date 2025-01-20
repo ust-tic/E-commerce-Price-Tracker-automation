@@ -9,18 +9,20 @@ import java.util.Properties;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 
-
-
 public class TestBase {
-	
+
 	public static WebDriver driver;
 	public static Properties prop;
-	
+
 	public TestBase() {
 		try {
-			prop = new Properties();
-			FileInputStream ip = new FileInputStream ("C:\\Selenium\\TICLProject\\src\\main\\java\\qa_config\\config.properties");
-			prop.load(ip);
+			String userDir = System.getProperty("user.dir");
+            String filePath = userDir + "/src/main/java/qa_config/config.properties";
+            prop = new Properties();
+            
+            FileInputStream ip = new FileInputStream (filePath);
+            prop.load(ip);
+
 		}
 		catch (FileNotFoundException e)	{
 			e.printStackTrace();
@@ -29,22 +31,18 @@ public class TestBase {
 			e.printStackTrace();	
 		}
 	}
-	
-public static void initialization() {
 
-	String browserName = prop.getProperty("browser");
-	if (browserName.equals("chrome")) {
-	System.setProperty("webdriver.chrome.driver","C:\\Users\\Kiran B N\\Downloads\\chromedriver-win64 (2)\\chromedriver-win64\\chromedriver.exe");
-	driver = new ChromeDriver();
+	public static void initialization() {
+
+		String browserName = prop.getProperty("browser");
+		if (browserName.equals("chrome")) {
+			System.setProperty("webdriver.chrome.driver", "./Driver/chromedriver.exe");
+			driver = new ChromeDriver();
+		}
+
+		driver.manage().window().maximize();
+
+		driver.get(prop.getProperty("url"));
+
+	}
 }
-
-	
-driver.manage().window().maximize();
-
-driver.get(prop.getProperty("url"));
-
-
-}	
-}
-
-
